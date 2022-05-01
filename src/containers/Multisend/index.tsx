@@ -1,23 +1,21 @@
 // @ts-nocheck
-import React, { useState, useEffect } from 'react';
-import { Box, Button, Typography, Input, Table, TableHead, TableRow } from '@mui/material'
+import { Box, Button } from '@mui/material'
 import Card from '../../components/Card/Card'
 import { useDispatch, useSelector } from 'react-redux'
 import { updateSteps } from '../../store/steps'
-import PlusIcon from '../../assets/vectors/plus-icon.svg'
 import { styles } from './styles'
-import Dialog from '../../components/Dialog'
 import Steps from '../../components/Steps'
 import { Step } from '../../components/Steps'
 import { StringStep, StepInfo } from '../../components/Steps'
 import { DynamicTable } from '../../components/DynamicTable'
-import { GetAccountBalance} from '../../utils/apiMethods'
-import { RootState } from '../../store';
+import { RootState } from '../../store'
+import { OverviewTable } from '../../components/OverviewTable'
+import { SignAndSubmit } from '../../components/SignAndSubmit'
+import { notEnoughBalance } from '../../utils/projectUtils';
 
 const Multisend = () => {
   const currentStep = parseInt(Step())
   const dispatch = useDispatch()
-  const { address } = useSelector((state: RootState) => state.profile)
   const { multisendRows } = useSelector((state: RootState) => state.multiRows)
 
   const renderStepOne = () => {
@@ -63,21 +61,29 @@ const Multisend = () => {
       break
     }
   }
-  
+  const insufficientAmount = notEnoughBalance()
   return (
-    <Box style={{display: 'inline-flex', width: '100%', padding: '0px 1%'}}>
+    <Box style={styles.holder}>
       <Card style={styles.leftSteps}>
         <Steps />
       </Card>
-
-      <Card style={styles.multiSendCard}>
-        <div id='table-holder' style={styles.tableHolder}>
+    
+    <Card style={styles.Card}>
+      <div id='content-holder' style={styles.contentHolder}>
+        <Box id='informative-block' style={styles.informativeBlock}>
           <StringStep />
           <StepInfo />
-          <DynamicTable />
-          <Box style={{width: '100%'}}>
-            {currentStep > 1?
-            <Button
+        </Box>
+        
+        <Box id='dynamic-table-holder' style={{width: '100%'}}>
+          {currentStep === 1? <DynamicTable />:
+          currentStep === 2? <OverviewTable />:
+          currentStep === 3? <SignAndSubmit />:null}
+        </Box>
+        
+        <Box id='navigation-holder' style={styles.navigationHolder}>
+          {currentStep > 1?
+              <Button
               style={styles.backButtonDefault} 
               onClick={() => renderPreviousStep()}
               onMouseEnter={(e) => {
@@ -88,19 +94,27 @@ const Multisend = () => {
               e.target.style.backgroundColor = 'rgba(82, 166, 248, 0.1)'
               e.target.style.color = '#52A6F8'
               }}> 
-              Back
-            </Button>:null}
-            
-            {currentStep > 2? null:
-            <Button
+                Back
+              </Button>:null}
+            {currentStep > 3? null:
+            currentStep === 2?
+              <Button
+              disabled={insufficientAmount}
+              style={styles.nextStep} 
+              onClick={() => renderNextStep()}>
+                {insufficientAmount?<small style={{color: 'red'}}>insufficient balance</small>:'Approve'}
+              </Button>
+            :
+                <Button
+                disabled={multisendRows < 1}
                 style={styles.nextStep} 
                 onClick={() => renderNextStep()}>
-                Next Step
-            </Button>}
-          </Box>
-        </div>
-      </Card>
-    </Box>
+                  {currentStep === 1? "Next step": "Sign and Submit"}
+                </Button>}
+        </Box>
+      </div>
+    </Card>
+  </Box>
   )
 }
 

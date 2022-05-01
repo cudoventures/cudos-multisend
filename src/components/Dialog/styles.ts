@@ -1,7 +1,8 @@
-// @ts-nocheck
-import { Box, styled } from '@mui/material'
+//@ts-nocheck
+import { styled, Box } from '@mui/material'
+import { CancelRounded } from '@mui/icons-material'
 
-const ModalContainer = styled(Box)(({ theme }) => ({
+export const ModalContainer = styled(Box)(({ theme }) => ({
   display: 'flex',
   flexDirection: 'column',
   alignItems: 'center',
@@ -13,4 +14,11 @@ const ModalContainer = styled(Box)(({ theme }) => ({
   zIndex: 1
 }))
 
-export default ModalContainer
+export const CancelRoundedIcon = styled(CancelRounded)(({ theme }) => ({
+  color: theme.palette.text.secondary,
+  position: 'absolute',
+  top: 32,
+  right: 32,
+  cursor: 'pointer'
+}))
+

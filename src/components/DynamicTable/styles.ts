@@ -1,21 +1,5 @@
 /* eslint-disable import/prefer-default-export */
 export const styles = {
-    walletInput: {
-        width: '550px', 
-        height: '50px', 
-        backgroundColor: '#28314E', 
-        fontSize: '90%', 
-        paddingLeft: '20px',
-        borderRadius: '5px'
-    },
-    amountInput: {
-        width: '180px', 
-        height: '50px', 
-        backgroundColor: '#28314E', 
-        fontSize: '90%', 
-        padding: '20px',
-        borderRadius: '5px'
-    },
     headerCells: {
         color: '#7D87AA', 
         fontWeight: '600',
@@ -34,21 +18,13 @@ export const styles = {
       alignItems: 'center',
       height: '23%',
     },
-    inputGroup: {
-        width: '100%', 
-        display: "flex", 
-        flexDirection: "row", 
-        alignItems: "flex-end"
-      },
-      addToListButton: {
-        height: '40px',
-        width: '140px',
-      },
-      tableContainer: {
-        borderRadius: '10px', 
-        background: '#28314E', 
-        margin: '15px 0 20px 0', 
-        width: '100%'
-      }
+    tableContainer: {
+      borderRadius: '10px', 
+      backgroundColor: '#28314E', 
+      width: '100%', 
+      height: '270px', 
+      padding: '0 20px',
+      margin: '20px 0 20px 0'
+    }
   } as const
   

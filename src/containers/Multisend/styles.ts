@@ -3,6 +3,29 @@ export const styles = {
   connectButton: {
     height: '50px',
     width: '220px',
+    marginTop: '50px',
+    marginBottom: '40px'
+  },
+  plusIcon: {
+    marginRight: '20px'
+  },
+  contentDissapear: {
+    opacity: '1', 
+    transition: 'opacity 0.5s', 
+    WebkitTransition: 'opacity 0.5s'
+  },
+  Card: {
+    textAlign: "center",
+    width: '85%',
+    height: '600px',
+    display: "flex",
+    flexDirection: "column",
+    justifyContent: "center",
+  },
+  holder: {
+    display: 'flex', 
+    height: '600px',
+    width: '100%',
   },
   addToListButton: {
     height: '40px',
@@ -23,21 +46,7 @@ export const styles = {
   stepsHolder: {
     alignConten: 'center', 
     justifyContent: 'center', 
-    width: '100%', 
-    height: '100%',
     alignItems: 'center'
-  },
-  plusIcon: {
-    marginRight: '20px'
-  },
-  multiSendCard: {
-    marginLeft: "2%",
-    textAlign: "center",
-    height: '605px',
-    width: '100%',
-    display: "flex",
-    flexDirection: "column",
-    justifyContent: "center"
   },
   tableHolder: {
     display: 'flex', 
@@ -47,11 +56,19 @@ export const styles = {
     height: '100%'
   },
   leftSteps: {
-    width: '25%',
+    display: 'flex',
     textAlign: "center",
-    height: '605px',
+    height: '600px',
+    justifyContent: "center",
+    marginRight: '40px',
+    padding: '0 40px 0 40px'
+  },
+  informativeBlock: {
     display: "flex",
     flexDirection: "column",
-    justifyContent: "center"
+    alignItems: "flex-start"
+  },
+  contentHolder: {
+    margin: "40px"
   }
 } as const

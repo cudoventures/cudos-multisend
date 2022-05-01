@@ -1,5 +1,8 @@
 /* eslint-disable import/prefer-default-export */
 import axios from 'axios';
+import { useDispatch, useSelector } from 'react-redux'
+import { RootState } from '../store'
+import { updateUser } from '../store/profile';
 
 const config = {
     rpc: import.meta.env.VITE_APP_RPC,
@@ -44,6 +47,8 @@ const config = {
     high: 5000000000000 * 4
     }
 }
+
+
   
 export const GetAccountBalance = async (account: string) => {
     const url: string = config.rest + '/bank/balances/' + account
@@ -58,4 +63,10 @@ export const GetAccountBalance = async (account: string) => {
                     return { accountBalance }
                 })
 }
-      
+
+export const UpdateAccountBalanceInState = async () => {
+    const dispatch = useDispatch()
+    const { address } = useSelector((state: RootState) => state.profile)
+    const { accountBalance } = await GetAccountBalance(address)
+    dispatch(updateUser({ address, balance: accountBalance }))
+}

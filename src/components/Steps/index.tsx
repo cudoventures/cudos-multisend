@@ -20,7 +20,7 @@ export const StepInfo = () => {
 
   switch (Step()){
     case '2':
-      title = 'Approve for Sending'
+      title = 'Approve addresses for Sending'
       subTitle = 'Check if the addresses and amounts are correct'
       break
     case '3':
@@ -47,7 +47,7 @@ export const StepInfo = () => {
 
 export const StringStep = () => {
   return (
-    <span style={{color:'#52A6F8', fontSize: '12px', fontWeight: '600', float: 'left'}}>Step {Step()}/3</span>
+    <span style={styles.stepInfoStyler}>Step {Step()}/3</span>
   )
 }
 
@@ -65,8 +65,8 @@ const Steps = () => {
   }
 
   return (
-    <div style={styles.stepsHolder}>
-          <div style={{margin: '20px 0  20px 0'}}>
+    <div style={{margin: '50px 0 30px 0'}}>
+          <div >
             <Box>
               <h3 style={{margin: '0 auto'}}>Multisend Tokens</h3>
             </Box>
@@ -79,7 +79,7 @@ const Steps = () => {
           <div id='options'>
             <img style={{margin: '30% auto'}} src={stepPic} alt="Steps" />
           </div>
-        </div>
+    </div>
   )
 }
 

@@ -1,6 +1,5 @@
 import React from 'react'
 import { Paper } from '@mui/material'
-import theme from '../../theme'
 
 const Card = ({
   children,

@@ -6,13 +6,15 @@ import settingsReducer from './settings'
 import stepsReducer from './steps'
 import multiRowsReducer from './multirows'
 import singleRowReducer from './singlerow'
+import modalsStateReducer from './modals'
 
 const rootReducer = combineReducers({
   profile: profileReducer,
   settings: settingsReducer,
   steps: stepsReducer,
   multiRows: multiRowsReducer,
-  singleRow: singleRowReducer
+  singleRow: singleRowReducer,
+  modalsState: modalsStateReducer
 })
 
 const persistConfig = {

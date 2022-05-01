@@ -8,7 +8,6 @@ import { GetAccountBalance} from '../../utils/apiMethods'
 import InfoIcon from '../../assets/vectors/info-icon.svg'
 import KeplrLogo from '../../assets/vectors/keplr-logo.svg'
 import Header from '../../components/Layout/Header'
-import Dialog from '../../components/Dialog'
 
 import { styles } from './styles'
 
@@ -22,7 +21,6 @@ const ConnectWallet = () => {
     try {
       const { address } = await ConnectLedger()
       const { accountBalance } = await GetAccountBalance(address)
-
       dispatch(updateUser({ address, balance: accountBalance }))
       navigate('welcome')
     } catch (error: any) {

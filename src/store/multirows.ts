@@ -12,7 +12,7 @@ export const multiRowsSlice = createSlice({
   name: 'multirows',
   initialState,
   reducers: {
-    updatemultiRows: (state, action: PayloadAction<multiRowsState>) => {
+    updatemultiRows: (state, action) => {
       return { ...state, ...action.payload }
     }
   }
