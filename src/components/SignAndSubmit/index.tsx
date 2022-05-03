@@ -1,5 +1,5 @@
 //@ts-nocheck
-import { Typography, TableContainer, Table, TableRow } from '@mui/material'
+import { Typography, TableContainer, Table, TableRow, Tooltip } from '@mui/material'
 import { styles } from './styles'
 import { RootState } from '../../store'
 import { useSelector } from 'react-redux'
@@ -10,10 +10,10 @@ import ToolTipIcon from '../../assets/vectors/tooltip-icon.svg'
 const SignAndSubmit = () => {
 
     const { multisendRows } = useSelector((state: RootState) => state.multiRows)
+    const { costOfMultiSendOperation, youAreSaving } = useSelector((state: RootState) => state.modalsState)
 
     const totalRecipients = multisendRows.length
     const totalAmount = totalAmountDue()
-    const approximateFees: number = 0 // TODO
 
     return (
         <div id='component-holder'>
@@ -56,12 +56,29 @@ const SignAndSubmit = () => {
 
             <TableContainer>
                 <Table style={styles.lowerTable}>
-                    <TableRow style={{display: 'inline'}}>
-                        <Typography style={{float: 'left'}} variant="subtitle1" color="text.secondary">
-                            Approximate cost of operations
-                        </Typography>
-                        <img style={{ float: 'left', padding: '0', margin: '0', height: '25px'}} src={ToolTipIcon} alt="Tooltip" />
-                        <span style={{float: 'right'}}>N/A</span>
+                    <TableRow style={{display: 'inline-flex', flexDirection: 'column'}}>
+                        <div>
+                            <Typography style={{float: 'left'}} variant="subtitle1" color="text.secondary">
+                                Approximate cost of operations
+                            </Typography>
+                            <Tooltip title='(Estimated GAS * 1.3 multiplier) * GAS price'>
+                                <img style={{ float: 'left', padding: '0', margin: '0', height: '25px'}} src={ToolTipIcon} alt="Tooltip" />
+                            </Tooltip>
+                            <span style={{color: '#52A6F8', float: 'right'}}>{costOfMultiSendOperation} CUDOS</span>
+                        </div>
+                        {youAreSaving?
+                            <div style={{textSize: '20px'}}>
+                                <Typography style={{float: 'left'}} variant="subtitle1" color="text.secondary">
+                                    You are saving
+                                </Typography>
+                                <Tooltip title={`Compared to ${multisendRows.length} single transactions`}>
+                                    <img style={{ float: 'left', padding: '0', margin: '0', height: '25px'}} src={ToolTipIcon} alt="Tooltip" />
+                                </Tooltip>
+                                <small><span style={{ color: 'cadetblue', float: 'right'}}>{youAreSaving} CUDOS</span></small>
+                            </div>
+                            :
+                            null
+                        }
                     </TableRow>
                 </Table>
             </TableContainer>

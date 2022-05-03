@@ -22,13 +22,14 @@ import ArrowIcon from '../../assets/vectors/arrow-down.svg'
 import AccountBalance from '../Subscriptions/accountBalance'
 import { updateSingleRow } from '../../store/singlerow'
 import { updatemultiRows } from '../../store/multirows'
+import { EXPLORER_PUBLIC_ADDRESS } from '../../utils/constants'
 
 const UserInfo = () => {
   const navigate = useNavigate()
   const dispatch = useDispatch()
   const { address, balance } = useSelector((state: RootState) => state.profile)
 
-  const explorerAddressCheck = import.meta.env.VITE_APP_EXPLORER_PUBLIC_ADDRESS + '/account/' + address
+  const explorerAddressCheck = EXPLORER_PUBLIC_ADDRESS + '/account/' + address
 
   const [open, setOpen] = useState(false)
   const [copied, setCopied] = useState<boolean>(false)
@@ -120,7 +121,7 @@ const UserInfo = () => {
                 />
               </Tooltip>
               <Tooltip title="Go to Explorer">
-                <a href={explorerAddressCheck}>
+                <a href={explorerAddressCheck} target='_blank'>
                   <img
                     style={{ marginLeft: '10px', cursor: 'pointer' }}
                     src={LinkIcon}

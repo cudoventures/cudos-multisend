@@ -1,22 +1,29 @@
-// @ts-nocheck
+//@ts-nocheck
 import { Box, Button } from '@mui/material'
 import Card from '../../components/Card/Card'
 import { useDispatch, useSelector } from 'react-redux'
 import { updateSteps } from '../../store/steps'
 import { styles } from './styles'
 import Steps from '../../components/Steps'
+import Dialog from '../../components/Dialog'
 import { Step } from '../../components/Steps'
 import { StringStep, StepInfo } from '../../components/Steps'
 import { DynamicTable } from '../../components/DynamicTable'
 import { RootState } from '../../store'
 import { OverviewTable } from '../../components/OverviewTable'
 import { SignAndSubmit } from '../../components/SignAndSubmit'
-import { notEnoughBalance } from '../../utils/projectUtils';
+import { notEnoughBalance } from '../../utils/projectUtils'
+import { getTxMsg, sign, getSimulatedMsgsCost } from '../../ledgers/KeplrLedger'
+import { updateModalsState } from '../../store/modals'
+import BigNumber from 'bignumber.js'
+import { GAS_PRICE } from '../../utils/constants'
+import { SeparateFractions, SeparateDecimals } from '../../utils/regexFormatting'
 
 const Multisend = () => {
   const currentStep = parseInt(Step())
   const dispatch = useDispatch()
   const { multisendRows } = useSelector((state: RootState) => state.multiRows)
+  const { address } = useSelector((state: RootState) => state.profile)
 
   const renderStepOne = () => {
     dispatch(updateSteps({ currentStep: '1' }))
@@ -26,8 +33,17 @@ const Multisend = () => {
     dispatch(updateSteps({ currentStep: '2' }))
   }
 
-  const renderStepThree = () => {
+  const renderStepThree = async () => {
+    const [ 
+      approxCostForThisMultiSend, 
+      youAreSaving 
+    ] = await getSimulatedMsgsCost(multisendRows, address)
+
     dispatch(updateSteps({ currentStep: '3' }))
+    dispatch(updateModalsState({ 
+      youAreSaving: youAreSaving,
+      costOfMultiSendOperation: approxCostForThisMultiSend
+    }))
   }
 
   const renderNextStep = () => {
@@ -61,9 +77,38 @@ const Multisend = () => {
       break
     }
   }
+
+  const prepareAndBroadcastTx = async () => {
+    
+    const txMsg = getTxMsg(multisendRows, address)
+    
+    dispatch(updateModalsState({ loading: true }))
+    const [ success, response ] = await sign(txMsg)
+    
+    // TODO: Investigate whether gasUsed vs gasWanted * gasPrice is actually deducted from balance 
+    if (success) {
+      const tempExpenses = new BigNumber(GAS_PRICE).multipliedBy(new BigNumber(response.gasWanted)).valueOf()
+      const expenses = SeparateDecimals(SeparateFractions(tempExpenses))
+
+      dispatch(updateModalsState({ 
+        loading: false, 
+        success: true, 
+        costOfMultiSendOperation: expenses, 
+        txHash: response.transactionHash }))
+    } else {
+      dispatch(updateModalsState({
+        loading: false,
+        failure: true, 
+        title: 'Transaction Failed ', 
+        message: response.message
+    }))
+    }
+  }
+
   const insufficientAmount = notEnoughBalance()
   return (
     <Box style={styles.holder}>
+      <Dialog />
       <Card style={styles.leftSteps}>
         <Steps />
       </Card>
@@ -108,7 +153,7 @@ const Multisend = () => {
                 <Button
                 disabled={multisendRows < 1}
                 style={styles.nextStep} 
-                onClick={() => renderNextStep()}>
+                onClick={currentStep === 3?() => prepareAndBroadcastTx():() => renderNextStep()}>
                   {currentStep === 1? "Next step": "Sign and Submit"}
                 </Button>}
         </Box>

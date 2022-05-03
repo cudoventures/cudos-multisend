@@ -1,5 +1,5 @@
 import { Typography } from '@mui/material'
-
+import { CHAIN_NAME } from '../../utils/constants'
 import { StyledNetwork } from './styles'
 
 const NetworkInfo = () => {
@@ -13,7 +13,7 @@ const NetworkInfo = () => {
           alignItems: 'center'
         }}
       >
-        {import.meta.env.VITE_APP_CHAIN_NAME}
+        {CHAIN_NAME}
       </Typography>
     </StyledNetwork>
   )

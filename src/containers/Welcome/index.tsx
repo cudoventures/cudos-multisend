@@ -8,19 +8,25 @@ import { updateModalsState } from '../../store/modals'
 import WelcomeGroupLogo from '../../assets/vectors/welcome-group-logos.svg'
 import PlusIcon from '../../assets/vectors/plus-icon.svg'
 import { styles } from  './styles'
+import { updatemultiRows } from '../../store/multirows'
 
 const Welcome = () => {
+  
   const initialModalState = {
     loading: false,
     success: false,
     failure: false,
     title: '',
-    message: ''
+    message: '',
+    costOfMultiSendOperation: '',
+    youAreSaving: '',
+    txHash: ''
   }
   const navigate = useNavigate()
   const dispatch = useDispatch()
   dispatch(updateSteps({ currentStep: '' }))
   dispatch(updateModalsState({ ...initialModalState }))
+  dispatch(updatemultiRows({ multisendRows: [] }))
 
   const renderStepOne = async () => {
     try {   

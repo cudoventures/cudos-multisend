@@ -1,15 +1,17 @@
 
 import { Dialog as MuiDialog } from '@mui/material'
-import { Box, Typography, Button, CircularProgress, Divider, Stack } from '@mui/material'
+import { Box, Typography, Button, CircularProgress, Divider, Stack, Tooltip } from '@mui/material'
 import { ModalContainer, CancelRoundedIcon } from './styles'
 import FailureIcon from '../../assets/vectors/failure.svg'
 import SuccessIcon from '../../assets/vectors/success.svg'
 import { useSelector, useDispatch } from 'react-redux'
 import { RootState } from '../../store'
-import { updateModalsState } from '../../store/modals';
+import { updateModalsState } from '../../store/modals'
+import { updateSteps } from '../../store/steps'
 import { OpenInNewRounded as OpenInNewRoundedIcon } from '@mui/icons-material'
 import { totalAmountDue } from '../../utils/projectUtils'
 import { useNavigate } from 'react-router-dom'
+import { EXPLORER_PUBLIC_ADDRESS } from '../../utils/constants'
 
 const Dialog = () => {
 
@@ -18,14 +20,18 @@ const Dialog = () => {
     success: false,
     failure: false,
     title: '',
-    message: ''
+    message: '',
+    costOfMultiSendOperation: '',
+    youAreSaving: '',
+    txHash: '',
   }
 
   const navigate = useNavigate()
   const dispatch = useDispatch()
-  const { success, loading, failure, title, message } = useSelector((state: RootState) => state.modalsState)
+  const { success, loading, failure, title, message, costOfMultiSendOperation, txHash } = useSelector((state: RootState) => state.modalsState)
   const { multisendRows } = useSelector((state: RootState) => state.multiRows)
   const amountPaid = totalAmountDue()
+  const TxCheckAddress = EXPLORER_PUBLIC_ADDRESS + "/transactions/" + txHash
 
   const startOver = () => {
     navigate('/welcome')
@@ -33,6 +39,7 @@ const Dialog = () => {
 
   const handleClose = () => {
     dispatch(updateModalsState({ ...initialState }))
+    dispatch(updateSteps({ currentStep: '1' }))
     navigate('/multisend')
   }
 
@@ -180,12 +187,14 @@ const Dialog = () => {
                   letterSpacing={1}
                   sx={{ marginLeft: 'auto' }}
                 >
-                  0.000123 CUDOS
+                  {costOfMultiSendOperation} CUDOS
                 </Typography>
               </Box>
               <Divider />
               <Box>
                 <Typography variant="body2">Transaction</Typography>
+                <Tooltip title="Go to Explorer">
+                <a href={TxCheckAddress} target='_blank'>
                 <Stack
                   marginBottom='20px'
                   direction="row"
@@ -207,6 +216,8 @@ const Dialog = () => {
                     })}
                   />
                 </Stack>
+                </a>
+              </Tooltip>
               </Box>
             </Box>
             <Button

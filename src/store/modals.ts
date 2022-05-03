@@ -3,6 +3,9 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 export interface modalsState {
     title: string
     message: string
+    costOfMultiSendOperation: string
+    youAreSaving: string
+    txHash: string
     loading: boolean
     success: boolean
     failure: boolean
@@ -11,9 +14,12 @@ export interface modalsState {
 const initialState: modalsState = {
     title: '',
     message: '',
+    costOfMultiSendOperation: '',
+    youAreSaving: '',
+    txHash: '',
     loading: false,
     success: false,
-    failure: false
+    failure: false,
 }
 
 export const modalsStateSlice = createSlice({

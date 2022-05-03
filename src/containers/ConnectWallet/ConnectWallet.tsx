@@ -19,6 +19,11 @@ const ConnectWallet = () => {
 
   const connect = async () => {
     try {
+      window.keplr.defaultOptions = {
+        sign: {
+            preferNoSetFee: true,
+        }
+      }
       const { address } = await ConnectLedger()
       const { accountBalance } = await GetAccountBalance(address)
       dispatch(updateUser({ address, balance: accountBalance }))

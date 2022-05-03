@@ -15,6 +15,7 @@ import { RootState } from './store'
 import '@fontsource/poppins'
 
 const App = () => {
+  
   const location = useLocation()
   const themeColor = useSelector((state: RootState) => state.settings.theme)
 
