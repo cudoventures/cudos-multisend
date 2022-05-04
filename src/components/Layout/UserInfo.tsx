@@ -48,6 +48,8 @@ const UserInfo = () => {
   }
 
   const handleDisconnect = () => {
+    sessionStorage.clear()
+    localStorage.clear()
     dispatch(updateSteps({ currentStep: '' }))
     dispatch(updateUser({ address: '', balance: '' }))
     dispatch(updateSingleRow({ tempAddress: '', tempAmount: '' }))

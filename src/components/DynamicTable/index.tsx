@@ -28,9 +28,9 @@ const DynamicTable = () => {
     const dispatch = useDispatch()
     const { multisendRows } = useSelector((state: RootState) => state.multiRows)
 
-    useEffect( () => {
+    useEffect(() => {
         setTimeout(() => { autoScroll.current.scrollIntoView({ behavior: "smooth", block: 'nearest', inline: 'start' }) }, 200)
-    })
+    }, [multisendRows])
 
     const handleCsvClick = () => {
         document.getElementById("csv-file")?.click()
@@ -119,10 +119,10 @@ const DynamicTable = () => {
 
         
     return (
-        <div id='component-holder'>
+        <div id='component-holder' style={{opacity: '1', transition: 'opacity 0.5s'}}>
             <Dialog />
             <SingleInputRow />
-                <TableContainer id='table-contaner' style={styles.tableContainer}>
+                <TableContainer id='table-container' style={styles.tableContainer}>
                     <h4 style={{marginBottom: '10px', float: "left"}}>List of recipients</h4>
                     <HtmlTooltip
                         style={{marginTop: '20px'}}

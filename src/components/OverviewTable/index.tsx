@@ -10,7 +10,7 @@ const OverviewTable = () => {
     const { multisendRows } = useSelector((state: RootState) => state.multiRows)
     return (
         <div id='component-holder'>
-                    <TableContainer id='table-contaner' style={styles.tableContainer}>
+                    <TableContainer id='table-container' style={styles.tableContainer}>
                         <h4 style={{marginBottom: '10px', float: "left"}}>List of recipients</h4>
                     <Table id='table'>
                         {/* TABLE HEADER */}
