@@ -10,6 +10,7 @@ import InfoIcon from '../../assets/vectors/info-icon.svg'
 import KeplrLogo from '../../assets/vectors/keplr-logo.svg'
 import Header from '../../components/Layout/Header'
 import Dialog from '../../components/Dialog'
+import BackgroundImage from '../../assets/vectors/background.svg'
 
 import { styles } from './styles'
 import { updateModalsState } from '../../store/modals'
@@ -44,7 +45,7 @@ const ConnectWallet = () => {
   (<Navigate to="/welcome" state={{ from: location }} replace />)
   :
   (
-    <Box style={styles.backgroundStyle}>
+    <Box style={{height: '100vh', width: '100vw', backgroundRepeat: 'no-repeat', backgroundSize: 'cover', backgroundImage: 'url(' + BackgroundImage + ')'}}>
       <Dialog />
       <Header />
       <Box>
