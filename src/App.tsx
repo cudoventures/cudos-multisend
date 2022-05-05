@@ -43,7 +43,7 @@ const App = () => {
   const themeColor = useSelector((state: RootState) => state.settings.theme)
 
   return (
-    <Container maxWidth='xl' style={{height: '100vh', width: '100vw', overflow: 'auto'}}>
+    <Container maxWidth='xl' style={{display: 'contents', height: '100vh', width: '100vw', overflow: 'auto'}}>
       <ThemeProvider theme={theme[themeColor]}>
         <CssBaseline />
         <Routes>

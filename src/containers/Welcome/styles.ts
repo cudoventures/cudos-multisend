@@ -16,26 +16,27 @@ export const styles = {
   },
   Card: {
     textAlign: "center",
-    margin: '0 20%',
-    width: '100%',
+    width: '900px',
     height: '600px',
     display: "flex",
     flexDirection: "column",
     justifyContent: "center",
-    transition: "width 1s, height 1s, margin 1s",
+    transition: "all 1s",
   },
   leftSteps: {
-    marginLeft: '-100px',
-    marginRight: '40px',
-    width: '0px',
+    padding: '0',
+    margin: '0',
+    width: '0',
     textAlign: "center",
     height: '600px',
     flexDirection: "column",
     justifyContent: "center",
-    transition: "width 1s, height 1s, margin 1s",
+    transition: "all 1s",
   },
   holder: {
     display: 'flex', 
-    height: '600px'
+    height: '600px',
+    justifyContent: 'center',
+    width: '100%'
   }
 } as const

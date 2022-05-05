@@ -16,7 +16,7 @@ export const styles = {
   },
   Card: {
     textAlign: "center",
-    width: '85%',
+    maxWidth: '1200px',
     height: '600px',
     display: "flex",
     flexDirection: "column",
@@ -26,6 +26,7 @@ export const styles = {
     display: 'flex', 
     height: '600px',
     width: '100%',
+    justifyContent: 'center'
   },
   addToListButton: {
     height: '40px',
@@ -61,7 +62,8 @@ export const styles = {
     height: '600px',
     justifyContent: "center",
     marginRight: '40px',
-    padding: '0 40px 0 40px'
+    padding: '0 40px 0 40px',
+    width: '240px'
   },
   informativeBlock: {
     display: "flex",

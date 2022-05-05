@@ -1,3 +1,4 @@
+//@ts-nocheck
 import { Box, Button, Typography } from '@mui/material'
 import { useNavigate, Navigate, useLocation } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
@@ -8,8 +9,10 @@ import { GetAccountBalance} from '../../utils/apiMethods'
 import InfoIcon from '../../assets/vectors/info-icon.svg'
 import KeplrLogo from '../../assets/vectors/keplr-logo.svg'
 import Header from '../../components/Layout/Header'
+import Dialog from '../../components/Dialog'
 
 import { styles } from './styles'
+import { updateModalsState } from '../../store/modals'
 
 const ConnectWallet = () => {
   const dispatch = useDispatch()
@@ -29,7 +32,11 @@ const ConnectWallet = () => {
       dispatch(updateUser({ address, balance: accountBalance }))
       navigate('welcome')
     } catch (error: any) {
-      alert(error.message)
+      dispatch(updateModalsState({
+        failure: true, 
+        title: 'Login Failed ', 
+        message: error.message
+    }))
     }
   }
 
@@ -38,6 +45,7 @@ const ConnectWallet = () => {
   :
   (
     <Box style={styles.backgroundStyle}>
+      <Dialog />
       <Header />
       <Box>
         <Box style={styles.connectContainer}>

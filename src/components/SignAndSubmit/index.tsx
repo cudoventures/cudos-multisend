@@ -17,7 +17,7 @@ const SignAndSubmit = () => {
 
     return (
         <div id='component-holder'>
-            <TableContainer>
+            <TableContainer style={{width: '910px'}}>
                 <Table style={styles.upperTable}>
                     <TableRow style={{display: 'inline'}}>
                         <h3 style={{float: 'left'}}>Transaction Details</h3>

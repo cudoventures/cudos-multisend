@@ -20,7 +20,7 @@ export const styles = {
   tableContainer: {
     borderRadius: '10px', 
     backgroundColor: '#28314E', 
-    width: '100%', 
+    width: '910px', 
     height: '374px', 
     padding: '0px 20px 0px 20px',
     margin: '20px 0 20px 0'

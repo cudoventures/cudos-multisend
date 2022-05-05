@@ -4,9 +4,11 @@ import { Paper } from '@mui/material'
 const Card = ({
   children,
   style,
+  id,
 }: {
   children: React.ReactNode
   style: any
+  id: any
 }) => {
   return (
     <Paper
@@ -16,6 +18,7 @@ const Card = ({
         background: '#20273E'
       }}
       style={style}
+      id={id}
     >
       {children}
     </Paper>

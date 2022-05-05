@@ -29,13 +29,27 @@ const Welcome = () => {
   dispatch(updatemultiRows({ multisendRows: [] }))
 
   const renderStepOne = async () => {
-    try {   
-      document.getElementById("card-resizer").parentNode.style.margin = '0 0 0 3.05%'
-      document.getElementById("card-resizer").parentNode.style.width = '100%'
-      document.getElementById("card-resizer").parentNode.style.height = '100%'
-      document.getElementById("card-resizer").style.opacity = '0'
-      document.getElementById("hidden-card-resizer").parentNode.style.width = '23%'
-      document.getElementById("hidden-card-resizer").parentNode.style.margin = '0 0 0 0'
+    try {
+      // REMOVING CONTENT FROM RIGHT CARD
+      document.getElementById("content-dissapear").style.opacity = '0'
+
+      // RESIZING RIGHT CARD
+      document.getElementById("resizable-card-right").style.justifyContent = 'center'
+      document.getElementById("resizable-card-right").style.flexDirection = 'column'
+      document.getElementById("resizable-card-right").style.display = 'flex'
+      document.getElementById("resizable-card-right").style.textAlign = 'center'
+      document.getElementById("resizable-card-right").style.width = '1030px'
+      document.getElementById("resizable-card-right").style.height = '600px'
+      
+      // RESIZING LEFT CARD
+      document.getElementById("resizable-card-left").style.display = 'flex'
+      document.getElementById("resizable-card-left").style.justifyContent = 'center'
+      document.getElementById("resizable-card-left").style.width = '240px'
+      document.getElementById("resizable-card-left").style.textAlign = 'center'
+      document.getElementById("resizable-card-left").style.height = '600px'
+      document.getElementById("resizable-card-left").style.pading = '0 40px'
+      document.getElementById("resizable-card-left").style.marginRight = '40px'
+
       await new Promise(resolve => setTimeout(resolve, 1000))
       navigate('/multisend')
     } catch (error: any) {
@@ -45,12 +59,10 @@ const Welcome = () => {
 
   return (
       <Box style={styles.holder}>
-        <Card style={styles.leftSteps}>
-          <div id='hidden-card-resizer'></div>
-        </Card>
+        <Card id='resizable-card-left' style={styles.leftSteps}></Card>
         
-        <Card style={styles.Card}>
-          <div id='card-resizer' style={styles.contentDissapear}>
+        <Card id='resizable-card-right' style={styles.Card}>
+          <div id='content-dissapear' style={styles.contentDissapear}>
           <Box>
             <img src={WelcomeGroupLogo} alt="Welcome logo" />
           </Box>
