@@ -4,6 +4,7 @@ export interface modalsState {
     title: string
     message: string
     costOfMultiSendOperation: string
+    finalCost: string
     youAreSaving: string
     txHash: string
     loading: boolean
@@ -15,6 +16,7 @@ const initialState: modalsState = {
     title: '',
     message: '',
     costOfMultiSendOperation: '',
+    finalCost: '',
     youAreSaving: '',
     txHash: '',
     loading: false,

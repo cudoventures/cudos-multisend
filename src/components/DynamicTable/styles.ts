@@ -8,7 +8,7 @@ export const styles = {
     },
     resultCells: {
       padding: '5px 5px 5px 5px',
-      textAlign: "center",
+      textAlign: "left",
       verticalAlign: "middle",
       fontWeight: 'bold'
     },

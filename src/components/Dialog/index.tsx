@@ -28,7 +28,7 @@ const Dialog = () => {
 
   const navigate = useNavigate()
   const dispatch = useDispatch()
-  const { success, loading, failure, title, message, costOfMultiSendOperation, txHash } = useSelector((state: RootState) => state.modalsState)
+  const { success, loading, failure, title, message, costOfMultiSendOperation, finalCost, txHash } = useSelector((state: RootState) => state.modalsState)
   const { multisendRows } = useSelector((state: RootState) => state.multiRows)
   const amountPaid = totalAmountDue()
   const TxCheckAddress = EXPLORER_PUBLIC_ADDRESS + "/transactions/" + txHash
@@ -187,7 +187,7 @@ const Dialog = () => {
                   letterSpacing={1}
                   sx={{ marginLeft: 'auto' }}
                 >
-                  {costOfMultiSendOperation} CUDOS
+                  {finalCost} CUDOS
                 </Typography>
               </Box>
               <Divider />

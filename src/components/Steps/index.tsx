@@ -16,7 +16,7 @@ export const Step = () => {
 export const StepInfo = () => {
   
   let title: string = 'Prepare Addresses'
-  let subTitle: string = 'Add the addresses you want to send tokens'
+  let subTitle: string = 'Add the addresses you want to send tokens to'
 
   switch (Step()){
     case '2':
@@ -25,7 +25,7 @@ export const StepInfo = () => {
       break
     case '3':
       title = 'Proceed with executing Multisend transaction'
-      subTitle = 'Check the details and continue with Submit'
+      subTitle = 'Check the details and continue with Sign and Submit'
       break
     default:
       break

@@ -32,7 +32,7 @@ const SignAndSubmit = () => {
 
                     <TableRow style={{display: 'inline'}}>
                     <Typography style={{float: 'left'}} variant="subtitle1" color="text.secondary">
-                        Total Amount to be Send
+                        Total Amount to be Sent
                     </Typography>
                     <span style={{float: 'right'}}>{totalAmount} CUDOS</span>
                     </TableRow>

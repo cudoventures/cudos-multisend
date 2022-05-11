@@ -93,13 +93,13 @@ const Multisend = () => {
       dispatch(updateModalsState({ 
         loading: false, 
         success: true, 
-        costOfMultiSendOperation: expenses, 
+        finalCost: expenses, 
         txHash: response.transactionHash }))
     } else {
       dispatch(updateModalsState({
         loading: false,
         failure: true, 
-        title: 'Transaction Failed ', 
+        title: 'Transaction Failed', 
         message: response.message
     }))
     }

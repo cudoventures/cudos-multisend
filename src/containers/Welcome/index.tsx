@@ -19,6 +19,7 @@ const Welcome = () => {
     title: '',
     message: '',
     costOfMultiSendOperation: '',
+    finalCost: '',
     youAreSaving: '',
     txHash: ''
   }

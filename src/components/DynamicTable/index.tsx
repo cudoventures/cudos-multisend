@@ -156,7 +156,7 @@ const DynamicTable = () => {
                     <TableHead style={{borderRadius: '10px', width: '100%', display: 'block'}}>
                         <TableRow style={{...styles.resultRow, display: 'flex', background: 'rgba(99, 109, 143, 0.2)'}}>
                             <TableCell style={{...styles.headerCells, padding: '10px 10px 10px 24px'}}>#</TableCell>
-                            <TableCell style={{...styles.headerCells, padding: '10px 10px 10px 30px', width: '410px'}}>Address</TableCell>
+                            <TableCell style={{...styles.headerCells, padding: '10px', width: '410px'}}>Address</TableCell>
                             <TableCell></TableCell>
                             <TableCell style={{...styles.headerCells, padding: '0px 0px 0px 55px', textAlign: 'left', width: '250px'}}>Amount</TableCell>
                             <TableCell style={styles.headerCells}>
@@ -183,8 +183,16 @@ const DynamicTable = () => {
                                     {item.recipient}
                                 </TableCell>
                                 <TableCell style={{...styles.resultCells, display: 'inline-flex', width: '300px'}}>
-                                    <div style={{marginRight: '5px', textAlign: 'right', width: '100px'}}>
-                                        {item.cudos}
+                                    
+                                    <div style={{marginRight: '5px', textAlign: 'left', width: '100px'}}>
+                                        {item.cudos.length < 13?
+                                        item.cudos:
+                                        <Tooltip title={item.cudos}>
+                                            <div>
+                                            {item.cudos.slice(0, 4 ) + '.....' + item.cudos.slice(-4)}
+                                            </div>
+                                        </Tooltip>
+                                        }
                                     </div>
                                     <span>
                                         {'CUDOS'}

@@ -1,5 +1,5 @@
 //@ts-nocheck
-import { Typography, TableContainer, Table, TableHead, TableBody, TableFooter, TableRow, TableCell } from '@mui/material'
+import { Tooltip, Typography, TableContainer, Table, TableHead, TableBody, TableFooter, TableRow, TableCell } from '@mui/material'
 import { styles } from './styles'
 import { RootState } from '../../store'
 import { useSelector } from 'react-redux'
@@ -17,7 +17,7 @@ const OverviewTable = () => {
                         <TableHead style={{borderRadius: '10px', width: '100%', display: 'block'}}>
                             <TableRow style={{...styles.resultRow, display: 'flex', background: 'rgba(99, 109, 143, 0.2)'}}>
                                 <TableCell style={{...styles.headerCells, padding: '10px 10px 10px 24px'}}>#</TableCell>
-                                <TableCell style={{...styles.headerCells, padding: '10px 10px 10px 30px', width: '400px'}}>Address</TableCell>
+                                <TableCell style={{...styles.headerCells, marginRight: '40px', width: '400px'}}>Address</TableCell>
                                 <TableCell style={{...styles.headerCells, padding: '0px 0px 0px 55px', textAlign: 'left', marginRight: "40px"}}>Amount</TableCell>
                             </TableRow>
                         </TableHead>
@@ -32,7 +32,14 @@ const OverviewTable = () => {
                                     </TableCell>
                                     <TableCell style={{...styles.resultCells, display: 'inline-flex', marginRight: "10px"}}>
                                         <div style={{marginRight: '5px', textAlign: 'right', width: '100px'}}>
-                                            {item.cudos}
+                                        {item.cudos.length < 13?
+                                        item.cudos:
+                                        <Tooltip title={item.cudos}>
+                                            <div>
+                                            {item.cudos.slice(0, 4 ) + '.....' + item.cudos.slice(-4)}
+                                            </div>
+                                        </Tooltip>
+                                        }
                                         </div>
                                         <span>
                                             {'CUDOS'}
