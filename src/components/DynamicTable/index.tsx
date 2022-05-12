@@ -51,6 +51,8 @@ const DynamicTable = () => {
         let txBatch = []
         for (let line of content) {
             line = line.trim()
+            line = line.replaceAll('"', '')
+            line = line.replaceAll("'", "")
             if (line.length === 0) { invdalidData = true; break }
 
             const columns = line.split(',')
