@@ -32,7 +32,7 @@ const OverviewTable = () => {
                                     </TableCell>
                                     <TableCell style={{...styles.resultCells, display: 'inline-flex', marginRight: "10px"}}>
                                         <div style={{marginRight: '5px', textAlign: 'right', width: '100px'}}>
-                                        {item.cudos.length < 13?
+                                        {item.cudos.length < 12?
                                         item.cudos:
                                         <Tooltip title={item.cudos}>
                                             <div>
