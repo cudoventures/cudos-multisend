@@ -35,7 +35,6 @@ const App = () => {
   useEffect(() => {
     window.addEventListener("keplr_keystorechange", async () => {
       connectAccount();
-      console.log("whatever")
     });
   }, [connectAccount]);
   
