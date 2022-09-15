@@ -13,7 +13,7 @@ import { totalAmountDue } from '../../utils/projectUtils'
 import { useNavigate } from 'react-router-dom'
 import { EXPLORER_PUBLIC_ADDRESS } from '../../utils/constants'
 
-const Dialog = () => {
+const Dialog = (): JSX.Element => {
 
   const initialState = {
     loading: false,
@@ -236,7 +236,7 @@ const Dialog = () => {
         </MuiDialog>
       )
     default:
-      break
+      return (<div></div>)
   }
 }
 

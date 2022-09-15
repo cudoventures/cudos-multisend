@@ -7,7 +7,8 @@ import {
   CHAIN_NAME, 
   CHAIN_ID, 
   GAS_PRICE, 
-  GAS_PRICE_DENOM 
+  GAS_PRICE_DENOM, 
+  STAKING_URL
 } from '../utils/constants'
 import { MsgMultiSend, MsgSend } from "cosmjs-types/cosmos/bank/v1beta1/tx"
 import { assertIsDeliverTxSuccess, SigningStargateClient, defaultRegistryTypes } from "@cosmjs/stargate"
@@ -53,6 +54,7 @@ const config = {
       coinGeckoId: 'cudos'
     }
   ],
+  walletUrlForStaking: STAKING_URL,
   bip44: { coinType: 118 },
   bech32Config: {
     bech32PrefixAccAddr: 'cudos',
