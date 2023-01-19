@@ -1,13 +1,13 @@
 
 //@ts-nocheck
 /* eslint-disable import/prefer-default-export */
-import { 
-  API_ADDRESS, 
-  RPC_ADDRESS, 
-  CHAIN_NAME, 
-  CHAIN_ID, 
-  GAS_PRICE, 
-  GAS_PRICE_DENOM, 
+import {
+  API_ADDRESS,
+  RPC_ADDRESS,
+  CHAIN_NAME,
+  CHAIN_ID,
+  GAS_PRICE,
+  GAS_PRICE_DENOM,
   STAKING_URL
 } from '../utils/constants'
 import { MsgMultiSend, MsgSend } from "cosmjs-types/cosmos/bank/v1beta1/tx"
@@ -51,9 +51,15 @@ const config = {
       coinDenom: 'CUDOS',
       coinMinimalDenom: 'acudos',
       coinDecimals: 18,
-      coinGeckoId: 'cudos'
+      coinGeckoId: 'cudos',
+      gasPriceStep: {
+        low: Number(GAS_PRICE),
+        average: Number(GAS_PRICE) * 2,
+        high: Number(GAS_PRICE) * 4
+      }
     }
   ],
+  features: ["ibc-transfer", "ibc-go", "cosmwasm", "wasmd_0.24+"],
   walletUrlForStaking: STAKING_URL,
   bip44: { coinType: 118 },
   bech32Config: {
@@ -64,12 +70,7 @@ const config = {
     bech32PrefixConsAddr: 'cudosvalcons',
     bech32PrefixConsPub: 'cudosvalconspub'
   },
-  coinType: 118,
-  gasPriceStep: {
-    low: GAS_PRICE,
-    average: GAS_PRICE * 2,
-    high: GAS_PRICE * 4
-  }
+  coinType: 118
 }
 
 export const ConnectLedger = async () => {
@@ -99,28 +100,28 @@ export const getSimulatedMsgsCost = async (listOfRecipients: Array<{}>, address:
 
   const rpcEndpoint = RPC_ADDRESS
   const client = await SigningStargateClient.connectWithSigner(rpcEndpoint, offlineSigner, {
-      registry: myRegistry,
+    registry: myRegistry,
   })
 
   const account = (await offlineSigner.getAccounts())[0]
 
   const approxForSingleSend = await estimateFee(
     client,
-    GasPrice.fromString(GAS_PRICE+GAS_PRICE_DENOM),
-    account.address, 
-    singleSendMsg.msgAny, 
+    GasPrice.fromString(GAS_PRICE + GAS_PRICE_DENOM),
+    account.address,
+    singleSendMsg.msgAny,
     'simulated message'
   )
 
   const approxFeeForMultiSend = await estimateFee(
     client,
-    GasPrice.fromString(GAS_PRICE+GAS_PRICE_DENOM),
-    account.address, 
-    multiSendMsg.msgAny, 
+    GasPrice.fromString(GAS_PRICE + GAS_PRICE_DENOM),
+    account.address,
+    multiSendMsg.msgAny,
     'simulated message'
   )
-  const singleCost = approxForSingleSend.amount[0]?approxForSingleSend.amount[0].amount:'0'
-  const multiCost = approxFeeForMultiSend.amount[0]?approxFeeForMultiSend.amount[0].amount:'0'
+  const singleCost = approxForSingleSend.amount[0] ? approxForSingleSend.amount[0].amount : '0'
+  const multiCost = approxFeeForMultiSend.amount[0] ? approxFeeForMultiSend.amount[0].amount : '0'
 
   const tempSingleCost = new BigNumber(singleCost).multipliedBy(multiplier)
   const tempMultiCost = new BigNumber(multiCost)
@@ -128,10 +129,10 @@ export const getSimulatedMsgsCost = async (listOfRecipients: Array<{}>, address:
   const approxCostForThisMultiSend = SeparateDecimals(SeparateFractions(tempMultiCost.valueOf()))
   let youAreSaving: string = ''
   if (tempSingleCost.isGreaterThan(tempMultiCost)) {
-    youAreSaving = SeparateDecimals(SeparateFractions(tempSingleCost.minus(tempMultiCost).valueOf())) 
+    youAreSaving = SeparateDecimals(SeparateFractions(tempSingleCost.minus(tempMultiCost).valueOf()))
   }
 
-  return [ approxCostForThisMultiSend, youAreSaving ]
+  return [approxCostForThisMultiSend, youAreSaving]
 }
 
 export const getSingleSendMsg = (listOfRecipients: Array<{}>, sender: string) => {
@@ -139,56 +140,56 @@ export const getSingleSendMsg = (listOfRecipients: Array<{}>, sender: string) =>
   const recipientAddress = firstRecipient.recipient
   const amount = firstRecipient.cudos
 
-  const msgAny = [{    
+  const msgAny = [{
     typeUrl: "/cosmos.bank.v1beta1.MsgSend",
     value: MsgSend.fromPartial({
-        fromAddress: sender,
-        toAddress: recipientAddress,
-        amount: [{
-            amount: (amount * 10 ** 18).toLocaleString('fullwide', {useGrouping:false}),
-            denom: "acudos",
-        }],
+      fromAddress: sender,
+      toAddress: recipientAddress,
+      amount: [{
+        amount: (amount * 10 ** 18).toLocaleString('fullwide', { useGrouping: false }),
+        denom: "acudos",
+      }],
     }),
   }]
-  return {msgAny, memo: 'Sent with CUDOS MultiSend'}
+  return { msgAny, memo: 'Sent with CUDOS MultiSend' }
 }
 
 export const getTxMsg = (listOfRecipients: Array<{}>, sender: string) => {
 
   let totalAmountDue = 0;
   listOfRecipients.forEach((recipient) => {
-      totalAmountDue += parseInt(recipient.cudos)
+    totalAmountDue += parseInt(recipient.cudos)
   })
-  const msgAny = [{    
-      typeUrl: "/cosmos.bank.v1beta1.MsgMultiSend",
-      value: MsgMultiSend.fromPartial({
-          inputs: [
-            {
-              address: sender,
-              coins: [{
-                  denom: "acudos",
-                  amount: (totalAmountDue * 10 ** 18).toLocaleString('fullwide', {useGrouping:false})
-              }]
-            }
-          ],
-          outputs: listOfRecipients.map((item) => ({
-              address: item.recipient,
-              coins: [{
-                  denom: "acudos",
-                  amount: (item.cudos * 10 ** 18).toLocaleString('fullwide', {useGrouping:false})
-              }]
-          })),
-      }),
+  const msgAny = [{
+    typeUrl: "/cosmos.bank.v1beta1.MsgMultiSend",
+    value: MsgMultiSend.fromPartial({
+      inputs: [
+        {
+          address: sender,
+          coins: [{
+            denom: "acudos",
+            amount: (totalAmountDue * 10 ** 18).toLocaleString('fullwide', { useGrouping: false })
+          }]
+        }
+      ],
+      outputs: listOfRecipients.map((item) => ({
+        address: item.recipient,
+        coins: [{
+          denom: "acudos",
+          amount: (item.cudos * 10 ** 18).toLocaleString('fullwide', { useGrouping: false })
+        }]
+      })),
+    }),
   }];
 
-  return {msgAny, memo: 'Sent with CUDOS MultiSend'}
+  return { msgAny, memo: 'Sent with CUDOS MultiSend' }
 }
 
 const calculateFee = (gasLimit: number, { denom, amount: gasPriceAmount }) => {
   const amount = Math.ceil(gasPriceAmount.multiply(new Uint53(gasLimit)).toFloatApproximation());
   return {
-      amount: (0, coins)(amount.toString(), denom),
-      gas: gasLimit.toString(),
+    amount: (0, coins)(amount.toString(), denom),
+    gas: gasLimit.toString(),
   }
 }
 
@@ -202,45 +203,45 @@ export const sign = async (txMsg: Object) => {
 
   window.keplr.defaultOptions = {
     sign: {
-        preferNoSetFee: true,
+      preferNoSetFee: true,
     }
   }
 
   const myRegistry = new Registry([
-      ...defaultRegistryTypes
+    ...defaultRegistryTypes
   ]);
-  
+
   try {
-      const chainId = CHAIN_ID
+    const chainId = CHAIN_ID
 
-      const offlineSigner = window.getOfflineSigner(chainId)
+    const offlineSigner = window.getOfflineSigner(chainId)
 
-      const rpcEndpoint = RPC_ADDRESS
-      const client = await SigningStargateClient.connectWithSigner(rpcEndpoint, offlineSigner, {
-          registry: myRegistry,
-      });
+    const rpcEndpoint = RPC_ADDRESS
+    const client = await SigningStargateClient.connectWithSigner(rpcEndpoint, offlineSigner, {
+      registry: myRegistry,
+    });
 
-      const account = (await offlineSigner.getAccounts())[0];
+    const account = (await offlineSigner.getAccounts())[0];
 
-      const fee = await estimateFee(
-        client,
-        GasPrice.fromString(GAS_PRICE+GAS_PRICE_DENOM),
-        account.address, 
-        txMsg.msgAny, 
-        txMsg.memo
-      )
+    const fee = await estimateFee(
+      client,
+      GasPrice.fromString(GAS_PRICE + GAS_PRICE_DENOM),
+      account.address,
+      txMsg.msgAny,
+      txMsg.memo
+    )
 
-      const result = await client.signAndBroadcast(
-          account.address,
-          txMsg.msgAny,
-          fee,
-          txMsg.memo,
-      );
-      
-      assertIsDeliverTxSuccess(result)
-      return [ true, result ]
-      
-  } catch (e: any){
-    return [ false, e ]
+    const result = await client.signAndBroadcast(
+      account.address,
+      txMsg.msgAny,
+      fee,
+      txMsg.memo,
+    );
+
+    assertIsDeliverTxSuccess(result)
+    return [true, result]
+
+  } catch (e: any) {
+    return [false, e]
   }
 }
