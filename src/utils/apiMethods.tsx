@@ -1,17 +1,9 @@
 /* eslint-disable import/prefer-default-export */
-import axios from 'axios';
 import { API_ADDRESS } from './constants'
+import { CudosNetworkConsts } from 'cudosjs';
   
 export const GetAccountBalance = async (account: string) => {
-    const url: string = API_ADDRESS + '/bank/balances/' + account
-    return axios.get(url)
-                .then(response => {
-                    let accountBalance
-                    if (response.status === 200 && response.data.result[0]) {
-                        accountBalance = response.data.result[0].amount
-                    } else {
-                        accountBalance = '0'
-                    }
-                    return { accountBalance }
-                })
+    const url: string = `${API_ADDRESS}/cosmos/bank/v1beta1/balances/${account}/by_denom?denom=${CudosNetworkConsts.CURRENCY_DENOM}`;
+    const amount = (await (await fetch(url)).json()).balance.amount;
+    return { accountBalance: amount }
 }

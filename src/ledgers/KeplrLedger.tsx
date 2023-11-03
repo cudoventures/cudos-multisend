@@ -10,6 +10,7 @@ import {
   GAS_PRICE_DENOM,
   STAKING_URL
 } from '../utils/constants'
+import { KeplrWallet } from 'cudosjs';
 import { MsgMultiSend, MsgSend } from "cosmjs-types/cosmos/bank/v1beta1/tx"
 import { assertIsDeliverTxSuccess, SigningStargateClient, defaultRegistryTypes } from "@cosmjs/stargate"
 import { EncodeObject, Registry } from "@cosmjs/proto-signing"
@@ -27,63 +28,31 @@ declare global {
   }
 }
 
-const config = {
-  rpc: RPC_ADDRESS,
-  rest: API_ADDRESS,
-  chainName: CHAIN_NAME,
-  chainId: CHAIN_ID,
-  currencies: [
-    {
-      coinDenom: 'CUDOS',
-      coinMinimalDenom: 'acudos',
-      coinDecimals: 18,
-      coinGeckoId: 'cudos'
-    }
-  ],
-  stakeCurrency: {
-    coinDenom: 'CUDOS',
-    coinMinimalDenom: 'acudos',
-    coinDecimals: 18,
-    coinGeckoId: 'cudos'
-  },
-  feeCurrencies: [
-    {
-      coinDenom: 'CUDOS',
-      coinMinimalDenom: 'acudos',
-      coinDecimals: 18,
-      coinGeckoId: 'cudos',
-      gasPriceStep: {
-        low: Number(GAS_PRICE),
-        average: Number(GAS_PRICE) * 2,
-        high: Number(GAS_PRICE) * 4
-      }
-    }
-  ],
-  features: ["ibc-transfer", "ibc-go", "cosmwasm", "wasmd_0.24+"],
-  walletUrlForStaking: STAKING_URL,
-  bip44: { coinType: 118 },
-  bech32Config: {
-    bech32PrefixAccAddr: 'cudos',
-    bech32PrefixAccPub: 'cudospub',
-    bech32PrefixValAddr: 'cudosvaloper',
-    bech32PrefixValPub: 'cudosvaloperpub',
-    bech32PrefixConsAddr: 'cudosvalcons',
-    bech32PrefixConsPub: 'cudosvalconspub'
-  },
-  coinType: 118
-}
+let keplrWallet: KeplrWallet | null = null;
 
 export const ConnectLedger = async () => {
+  if (keplrWallet === null) {
+    keplrWallet = new KeplrWallet({
+        CHAIN_ID: CHAIN_ID,
+        CHAIN_NAME: CHAIN_NAME,
+        RPC: RPC_ADDRESS,
+        API: API_ADDRESS,
+        STAKING: STAKING_URL,
+        GAS_PRICE: GAS_PRICE,
+    });
 
-  await window.keplr.experimentalSuggestChain(config)
-  await window.keplr.enable(CHAIN_ID)
+    await keplrWallet.connect();
+  }
 
-  const offlineSigner = await window.getOfflineSigner(config.chainId)
-  const accounts = await offlineSigner.getAccounts()
+  return { address: keplrWallet.accountAddress };
+}
 
-  const { address } = accounts[0]
+export const getClient = async (options?: SigningStargateClientOptions): Promise < CudosSigningStargateClient > => {
+  return CudosSigningStargateClient.connectWithSigner(RPC_ADDRESS, keplrWallet.offlineSigner, options);
+}
 
-  return { address }
+export const getSigningClient = async (options?: SigningStargateClientOptions): Promise < CudosSigningStargateClient > => {
+  return CudosSigningStargateClient.connectWithSigner(CHAIN_DETAILS.RPC_ADDRESS, keplrWallet.offlineSigner, options);
 }
 
 export const getSimulatedMsgsCost = async (listOfRecipients: Array<{}>, address: string) => {
@@ -95,13 +64,11 @@ export const getSimulatedMsgsCost = async (listOfRecipients: Array<{}>, address:
     ...defaultRegistryTypes
   ])
 
-  const chainId = CHAIN_ID
-  const offlineSigner = window.getOfflineSigner(chainId)
+  const offlineSigner = keplrWallet.offlineSigner;
 
-  const rpcEndpoint = RPC_ADDRESS
-  const client = await SigningStargateClient.connectWithSigner(rpcEndpoint, offlineSigner, {
+  const client = getSigningClient({
     registry: myRegistry,
-  })
+  });
 
   const account = (await offlineSigner.getAccounts())[0]
 
@@ -200,24 +167,14 @@ const estimateFee = async (client: SigningStargateClient, gasPrice: GasPrice, si
 }
 
 export const sign = async (txMsg: Object) => {
-
-  window.keplr.defaultOptions = {
-    sign: {
-      preferNoSetFee: true,
-    }
-  }
-
   const myRegistry = new Registry([
     ...defaultRegistryTypes
   ]);
 
   try {
-    const chainId = CHAIN_ID
+    const offlineSigner = keplrWallet.offlineSigner;
 
-    const offlineSigner = window.getOfflineSigner(chainId)
-
-    const rpcEndpoint = RPC_ADDRESS
-    const client = await SigningStargateClient.connectWithSigner(rpcEndpoint, offlineSigner, {
+    const client = getSigningClient({
       registry: myRegistry,
     });
 

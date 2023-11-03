@@ -48,7 +48,7 @@ const App = () => {
         <Routes>
           <Route path="/" element={<ConnectWallet />} />
         </Routes>
-        {location.pathname === '/' ? null : (
+        {location.pathname !== '/' && (
           <Layout>
             <Routes>
               <Route element={<RequireKeplr />}>
