@@ -17,15 +17,16 @@ const rootReducer = combineReducers({
   modalsState: modalsStateReducer
 })
 
-const persistConfig = {
-  key: 'root',
-  storage
-}
+// const persistConfig = {
+//   key: 'root',
+//   storage
+// }
 
-const persistedReducer = persistReducer(persistConfig, rootReducer)
+// const persistedReducer = persistReducer(persistConfig, rootReducer)
 
 export const store = configureStore({
-  reducer: persistedReducer
+  // reducer: persistedReducer
+  reducer: rootReducer
 })
 
 // Infer the `RootState` and `AppDispatch` types from the store itself

@@ -29,7 +29,7 @@ const DynamicTable = () => {
     const { multisendRows } = useSelector((state: RootState) => state.multiRows)
 
     useEffect(() => {
-        setTimeout(() => { autoScroll.current.scrollIntoView({ behavior: "smooth", block: 'nearest', inline: 'start' }) }, 200)
+        setTimeout(() => { autoScroll.current?.scrollIntoView({ behavior: "smooth", block: 'nearest', inline: 'start' }) }, 200)
     }, [multisendRows])
 
     const handleCsvClick = () => {

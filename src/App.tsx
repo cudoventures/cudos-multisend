@@ -19,7 +19,6 @@ import { updateUser } from './store/profile'
 import { GetAccountBalance } from './utils/apiMethods'
 
 const App = () => {
-
   const dispatch = useDispatch()
 
   const connectAccount = useCallback(async () => {

@@ -10,7 +10,7 @@ import {
   GAS_PRICE_DENOM,
   STAKING_URL
 } from '../utils/constants'
-import { KeplrWallet } from 'cudosjs';
+import { DEFAULT_GAS_MULTIPLIER, KeplrWallet, estimateFee as cudosJsEstimateFee } from 'cudosjs';
 import { MsgMultiSend, MsgSend } from "cosmjs-types/cosmos/bank/v1beta1/tx"
 import { assertIsDeliverTxSuccess, SigningStargateClient, defaultRegistryTypes } from "@cosmjs/stargate"
 import { EncodeObject, Registry } from "@cosmjs/proto-signing"
@@ -19,6 +19,8 @@ import { Uint53 } from "@cosmjs/math"
 import { GasPrice } from '@cosmjs/launchpad'
 import BigNumber from 'bignumber.js'
 import { SeparateFractions, SeparateDecimals } from '../utils/regexFormatting'
+import { CudosSigningStargateClient } from 'cudosjs/build/stargate/cudos-signingstargateclient';
+import { CudosStargateClient } from 'cudosjs/build/stargate/cudos-stargateclient';
 declare global {
   interface Window {
     keplr: any
@@ -29,6 +31,10 @@ declare global {
 }
 
 let keplrWallet: KeplrWallet | null = null;
+
+export const DisconnectLedger = () => {
+    keplrWallet?.disconnect();
+}
 
 export const ConnectLedger = async () => {
   if (keplrWallet === null) {
@@ -47,12 +53,12 @@ export const ConnectLedger = async () => {
   return { address: keplrWallet.accountAddress };
 }
 
-export const getClient = async (options?: SigningStargateClientOptions): Promise < CudosSigningStargateClient > => {
-  return CudosSigningStargateClient.connectWithSigner(RPC_ADDRESS, keplrWallet.offlineSigner, options);
+export const getClient = async (options?: SigningStargateClientOptions): Promise < CudosStargateClient > => {
+  return CudosStargateClient.connect(RPC_ADDRESS, options);
 }
 
 export const getSigningClient = async (options?: SigningStargateClientOptions): Promise < CudosSigningStargateClient > => {
-  return CudosSigningStargateClient.connectWithSigner(CHAIN_DETAILS.RPC_ADDRESS, keplrWallet.offlineSigner, options);
+  return CudosSigningStargateClient.connectWithSigner(RPC_ADDRESS, keplrWallet.offlineSigner, options);
 }
 
 export const getSimulatedMsgsCost = async (listOfRecipients: Array<{}>, address: string) => {
@@ -66,7 +72,7 @@ export const getSimulatedMsgsCost = async (listOfRecipients: Array<{}>, address:
 
   const offlineSigner = keplrWallet.offlineSigner;
 
-  const client = getSigningClient({
+  const client = await getSigningClient({
     registry: myRegistry,
   });
 
@@ -161,9 +167,10 @@ const calculateFee = (gasLimit: number, { denom, amount: gasPriceAmount }) => {
 }
 
 const estimateFee = async (client: SigningStargateClient, gasPrice: GasPrice, signerAddress: string, messages: readonly EncodeObject[], memo = "") => {
-  const multiplier = 1.3
-  const gasEstimation = await client.simulate(signerAddress, messages, memo)
-  return (0, calculateFee)(Math.round(gasEstimation * multiplier), gasPrice)
+  return cudosJsEstimateFee(client, signerAddress, messages, gasPrice, DEFAULT_GAS_MULTIPLIER, memo);
+  // const multiplier = 1.5
+  // const gasEstimation = await client.simulate(signerAddress, messages, memo)
+  // return (0, calculateFee)(Math.round(gasEstimation * multiplier), gasPrice)
 }
 
 export const sign = async (txMsg: Object) => {
@@ -174,7 +181,7 @@ export const sign = async (txMsg: Object) => {
   try {
     const offlineSigner = keplrWallet.offlineSigner;
 
-    const client = getSigningClient({
+    const client = await getSigningClient({
       registry: myRegistry,
     });
 

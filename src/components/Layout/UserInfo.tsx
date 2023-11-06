@@ -23,6 +23,7 @@ import AccountBalance from '../Subscriptions/accountBalance'
 import { updateSingleRow } from '../../store/singlerow'
 import { updatemultiRows } from '../../store/multirows'
 import { EXPLORER_PUBLIC_ADDRESS } from '../../utils/constants'
+import { DisconnectLedger } from '../../ledgers/KeplrLedger'
 
 const UserInfo = () => {
   const navigate = useNavigate()
@@ -50,6 +51,7 @@ const UserInfo = () => {
   const handleDisconnect = () => {
     sessionStorage.clear()
     localStorage.clear()
+    DisconnectLedger();
     dispatch(updateSteps({ currentStep: '' }))
     dispatch(updateUser({ address: '', balance: '' }))
     dispatch(updateSingleRow({ tempAddress: '', tempAmount: '' }))
