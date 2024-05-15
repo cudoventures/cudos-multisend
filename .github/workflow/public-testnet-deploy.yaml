@@ -1,0 +1,40 @@
+name: Deploy to Docker
+
+#on:
+#  push:
+#    branches: [ main ]
+
+on:
+  workflow_dispatch:
+
+jobs:
+
+  build:
+    runs-on: public-multisend
+
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: Create .env file
+      run: |
+        cat << EOF > .env
+        VITE_APP_RPC="https://public-testnet-sentry-02.hosts.cudos.org:2087"
+        VITE_APP_API="https://public-testnet-sentry-02.hosts.cudos.org:2052"
+        VITE_APP_EXPLORER_PUBLIC_ADDRESS="https://explorer.testnet.cudos.org/"
+        VITE_APP_STAKING_URL="https://bridge.testnet.cudos.org:3000/validators"
+        VITE_APP_CHAIN_NAME="cudos-testnet-1"
+        VITE_APP_CHAIN_ID="cudos-testnet-1"
+        VITE_APP_GAS_PRICE="5000000000000"
+        VITE_APP_GAS_PRICE_DENOM="acudos"
+        EOF
+
+    - name: Remove old containers
+      run: |
+        sudo docker stop dev_deploy_cudos-multisend || true
+        sudo docker rm dev_deploy_cudos-multisend || true
+
+    - name: Build Docker image
+      run: sudo docker build -t dev_deploy_cudos-multisend . --no-cache
+
+    - name: Run Docker container
+      run: sudo docker run -d -p 3150:80 --name dev_deploy_cudos-multisend --restart=unless-stopped dev_deploy_cudos-multisend
