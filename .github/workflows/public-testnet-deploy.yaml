@@ -20,7 +20,7 @@ jobs:
         cat << EOF > .env
         VITE_APP_RPC="https://public-testnet-sentry-02.hosts.cudos.org:2087"
         VITE_APP_API="https://public-testnet-sentry-02.hosts.cudos.org:2052"
-        VITE_APP_EXPLORER_PUBLIC_ADDRESS="https://explorer.testnet.cudos.org/"
+        VITE_APP_EXPLORER_PUBLIC_ADDRESS="http://explorer.testnet.cudos.org/"
         VITE_APP_STAKING_URL="https://bridge.testnet.cudos.org:3000/validators"
         VITE_APP_CHAIN_NAME="cudos-testnet-public-4"
         VITE_APP_CHAIN_ID="cudos-testnet-public-4"
