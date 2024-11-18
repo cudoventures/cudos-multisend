@@ -1,7 +1,7 @@
 export const isValidAddress = (addr: string) => {
     if (addr === '' || addr === undefined) return false
     // const { tempAddress } = useSelector((state: RootState) => state.singleRow)
-    const addressCheck = addr.replace(/^cudos[0-9a-z]{39}$/gm, 'OK');
+    const addressCheck = addr.replace(/^fetch[0-9a-z]{39}$/gm, 'OK');
     return addressCheck === 'OK'
 }
 

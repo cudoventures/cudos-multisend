@@ -12,7 +12,7 @@ export const totalAmountDue = () => {
   const { multisendRows } = useSelector((state: RootState) => state.multiRows)
   let totalAmount: number = 0
   multisendRows.forEach((item)=>{
-    let amount = +item.cudos
+    let amount = +item.fet
     totalAmount += amount
   })
   return totalAmount

@@ -34,7 +34,7 @@ const SignAndSubmit = () => {
                     <Typography style={{float: 'left'}} variant="subtitle1" color="text.secondary">
                         Total Amount to be Sent
                     </Typography>
-                    <span style={{float: 'right'}}>{totalAmount} CUDOS</span>
+                    <span style={{float: 'right'}}>{totalAmount} FET</span>
                     </TableRow>
 
                     <TableRow style={{display: 'inline'}}>
@@ -64,7 +64,7 @@ const SignAndSubmit = () => {
                             <Tooltip title='(Estimated GAS * 1.3 multiplier) * GAS price'>
                                 <img style={{ float: 'left', padding: '0', margin: '0', height: '25px'}} src={ToolTipIcon} alt="Tooltip" />
                             </Tooltip>
-                            <span style={{color: '#52A6F8', float: 'right'}}>{costOfMultiSendOperation} CUDOS</span>
+                            <span style={{color: '#52A6F8', float: 'right'}}>{costOfMultiSendOperation} FET</span>
                         </div>
                         {youAreSaving?
                             <div style={{textSize: '20px'}}>
@@ -74,7 +74,7 @@ const SignAndSubmit = () => {
                                 <Tooltip title={`Compared to ${multisendRows.length} single transactions`}>
                                     <img style={{ float: 'left', padding: '0', margin: '0', height: '25px'}} src={ToolTipIcon} alt="Tooltip" />
                                 </Tooltip>
-                                <small><span style={{ color: 'cadetblue', float: 'right'}}>{youAreSaving} CUDOS</span></small>
+                                <small><span style={{ color: 'cadetblue', float: 'right'}}>{youAreSaving} FET</span></small>
                             </div>
                             :
                             null

@@ -1,4 +1,4 @@
-# Cudos-MultiSend dApp
+# ASI MultiSend dApp
 
 ## running in Docker
  - `docker build -t cudos-multisend . `

@@ -34,24 +34,24 @@ const config = {
   chainId: CHAIN_ID,
   currencies: [
     {
-      coinDenom: 'CUDOS',
-      coinMinimalDenom: 'acudos',
+      coinDenom: 'FET',
+      coinMinimalDenom: 'afet',
       coinDecimals: 18,
-      coinGeckoId: 'cudos'
+      coinGeckoId: 'fet'
     }
   ],
   stakeCurrency: {
-    coinDenom: 'CUDOS',
-    coinMinimalDenom: 'acudos',
+    coinDenom: 'FET',
+    coinMinimalDenom: 'afet',
     coinDecimals: 18,
-    coinGeckoId: 'cudos'
+    coinGeckoId: 'fet'
   },
   feeCurrencies: [
     {
-      coinDenom: 'CUDOS',
-      coinMinimalDenom: 'acudos',
+      coinDenom: 'FET',
+      coinMinimalDenom: 'afet',
       coinDecimals: 18,
-      coinGeckoId: 'cudos',
+      coinGeckoId: 'fet',
       gasPriceStep: {
         low: Number(GAS_PRICE),
         average: Number(GAS_PRICE) * 2,
@@ -63,12 +63,12 @@ const config = {
   walletUrlForStaking: STAKING_URL,
   bip44: { coinType: 118 },
   bech32Config: {
-    bech32PrefixAccAddr: 'cudos',
-    bech32PrefixAccPub: 'cudospub',
-    bech32PrefixValAddr: 'cudosvaloper',
-    bech32PrefixValPub: 'cudosvaloperpub',
-    bech32PrefixConsAddr: 'cudosvalcons',
-    bech32PrefixConsPub: 'cudosvalconspub'
+    bech32PrefixAccAddr: 'fetch',
+    bech32PrefixAccPub: 'fetchpub',
+    bech32PrefixValAddr: 'fetchvaloper',
+    bech32PrefixValPub: 'fetchvaloperpub',
+    bech32PrefixConsAddr: 'fetchvalcons',
+    bech32PrefixConsPub: 'fetchvalconspub'
   },
   coinType: 118
 }
@@ -138,7 +138,7 @@ export const getSimulatedMsgsCost = async (listOfRecipients: Array<{}>, address:
 export const getSingleSendMsg = (listOfRecipients: Array<{}>, sender: string) => {
   const firstRecipient = listOfRecipients[0]
   const recipientAddress = firstRecipient.recipient
-  const amount = firstRecipient.cudos
+  const amount = firstRecipient.fet
 
   const msgAny = [{
     typeUrl: "/cosmos.bank.v1beta1.MsgSend",
@@ -147,7 +147,7 @@ export const getSingleSendMsg = (listOfRecipients: Array<{}>, sender: string) =>
       toAddress: recipientAddress,
       amount: [{
         amount: (amount * 10 ** 18).toLocaleString('fullwide', { useGrouping: false }),
-        denom: "acudos",
+        denom: "afet",
       }],
     }),
   }]
@@ -158,7 +158,7 @@ export const getTxMsg = (listOfRecipients: Array<{}>, sender: string) => {
 
   let totalAmountDue = 0;
   listOfRecipients.forEach((recipient) => {
-    totalAmountDue += parseInt(recipient.cudos)
+    totalAmountDue += parseInt(recipient.fet)
   })
   const msgAny = [{
     typeUrl: "/cosmos.bank.v1beta1.MsgMultiSend",
@@ -167,7 +167,7 @@ export const getTxMsg = (listOfRecipients: Array<{}>, sender: string) => {
         {
           address: sender,
           coins: [{
-            denom: "acudos",
+            denom: "afet",
             amount: (totalAmountDue * 10 ** 18).toLocaleString('fullwide', { useGrouping: false })
           }]
         }
@@ -175,8 +175,8 @@ export const getTxMsg = (listOfRecipients: Array<{}>, sender: string) => {
       outputs: listOfRecipients.map((item) => ({
         address: item.recipient,
         coins: [{
-          denom: "acudos",
-          amount: (item.cudos * 10 ** 18).toLocaleString('fullwide', { useGrouping: false })
+          denom: "afet",
+          amount: (item.fet * 10 ** 18).toLocaleString('fullwide', { useGrouping: false })
         }]
       })),
     }),

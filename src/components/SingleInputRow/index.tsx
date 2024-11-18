@@ -32,7 +32,7 @@ const SingleInputRow = () => {
     const handleAddRow = () => {
         const item = {
             recipient: state.recipientAddress[0],
-            cudos: state.recipientAmount[0]
+            fet: state.recipientAmount[0]
         }
         const newRows = [...multisendRows, item]
         dispatch(updatemultiRows({multisendRows: newRows}))
@@ -56,7 +56,7 @@ const SingleInputRow = () => {
                     type="text"
                     name="recipientAddress"
                     id='singleAddressTab'
-                    placeholder="e.g cudos1nkf0flyugd2ut40cg4tn48sp70p2e65wse8abc"
+                    placeholder="e.g fetch1genudzpvqe2t9k64xwueua35a8kfvl3f2kurxg"
                     onChange={handleChange}
                     className="form-control"
                     />

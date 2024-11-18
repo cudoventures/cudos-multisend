@@ -74,7 +74,7 @@ const DynamicTable = () => {
 
             const item = {
                 recipient: recipient,
-                cudos: amount.toString()
+                fet: amount.toString()
             }
             txBatch.push(item)
         }
@@ -187,17 +187,17 @@ const DynamicTable = () => {
                                 <TableCell style={{...styles.resultCells, display: 'inline-flex', width: '300px'}}>
                                     
                                     <div style={{marginRight: '5px', textAlign: 'left', width: '100px'}}>
-                                        {item.cudos.length < 13?
-                                        item.cudos:
-                                        <Tooltip title={item.cudos}>
+                                        {item.fet.length < 13?
+                                        item.fet:
+                                        <Tooltip title={item.fet}>
                                             <div>
-                                            {item.cudos.slice(0, 4 ) + '.....' + item.cudos.slice(-4)}
+                                            {item.fet.slice(0, 4 ) + '.....' + item.fet.slice(-4)}
                                             </div>
                                         </Tooltip>
                                         }
                                     </div>
                                     <span>
-                                        {'CUDOS'}
+                                        {'FET'}
                                     </span>
                                 </TableCell>
                                 <TableCell style={{...styles.resultCells}}>

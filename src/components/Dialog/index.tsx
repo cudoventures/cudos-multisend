@@ -165,7 +165,7 @@ const Dialog = (): JSX.Element => {
                 <Typography margin='10px 0 5px 0' color="text.secondary" variant="body2">
                   Total Amount
                 </Typography>
-                <Typography variant="body2">{amountPaid} CUDOS</Typography>
+                <Typography variant="body2">{amountPaid} FET</Typography>
               </Box>
 
               <Box>
@@ -187,7 +187,7 @@ const Dialog = (): JSX.Element => {
                   letterSpacing={1}
                   sx={{ marginLeft: 'auto' }}
                 >
-                  {finalCost} CUDOS
+                  {finalCost} FET
                 </Typography>
               </Box>
               <Divider />

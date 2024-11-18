@@ -32,10 +32,10 @@ const AccountBalance = () => {
   }, [balance])
 
   return (
-    <Tooltip title={fullBalance + ' CUDOS'}>
+    <Tooltip title={fullBalance + ' FET'}>
     <div>
       <span style={{margin: '0 5px 0 10px'}}>{displayBalance}</span>
-      <span>CUDOS</span>
+      <span>FET</span>
     </div>
     </Tooltip>
   )
