@@ -158,7 +158,7 @@ export const getTxMsg = (listOfRecipients: Array<{}>, sender: string) => {
 
   let totalAmountDue = 0;
   listOfRecipients.forEach((recipient) => {
-    totalAmountDue += parseInt(recipient.fet)
+    totalAmountDue += parseFloat(recipient.fet)
   })
   const msgAny = [{
     typeUrl: "/cosmos.bank.v1beta1.MsgMultiSend",

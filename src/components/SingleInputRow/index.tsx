@@ -70,9 +70,9 @@ const SingleInputRow = () => {
                     name="recipientAmount"
                     id='singleAmountTab'
                     placeholder="0"
-                    min={1}
-                    onKeyDown={event => {if (['e', 'E', '+', "-", ".", ","].includes(event.key)) {event.preventDefault()}}}
-                    onPaste={(e)=>{e.preventDefault()}} 
+                    min={0.001}
+                    // onKeyDown={event => {if (['e', 'E', '+', "-", ".", ","].includes(event.key)) {event.preventDefault()}}}
+                    // onPaste={(e)=>{e.preventDefault()}} 
                     onChange={handleChange}
                     />
                 </div>
